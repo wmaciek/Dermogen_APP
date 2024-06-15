@@ -265,7 +265,7 @@ def generate_sequence_sharpened(model, img, sequence_len=3):
         # Apply sharpening and ensure the result is also contiguous
         current_img = sharpen_image_pil(current_img)
         # Add batch dimension back if it was removed
-        current_img = current_img.unsqueeze(0)
+        # current_img = current_img.unsqueeze(0)
         # results.append(current_img.resize((224, 224)))
 
     return results
