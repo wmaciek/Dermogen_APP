@@ -1,5 +1,5 @@
 altair==5.3.0
-cv2
+opencv-python
 appnope==0.1.4
 astor==0.8.1
 asttokens==2.4.1
