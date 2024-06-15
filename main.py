@@ -60,7 +60,6 @@ if image is not None:
 
     st.image(preview_image, caption='Obraz z wybranym oknem', use_column_width=True)
 
-
     if st.sidebar.button('Wybierz'):
         left = x
         top = y
