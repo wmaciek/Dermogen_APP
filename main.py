@@ -52,7 +52,7 @@ if image is not None:
     st.image(preview_image, caption='Obraz z wybranym oknem', use_column_width=True)
 
     pix2pix = Pix2Pix(3, 3)
-    pix2pix.load_state_dict(torch.load(CHECKPOINT_PATH))
+    pix2pix.load_state_dict(torch.load(CHECKPOINT_PATH), map_location=torch.device('cpu'))
 
     if st.sidebar.button('Wybierz'):
         left = x
