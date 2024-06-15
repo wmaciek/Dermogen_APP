@@ -12,6 +12,7 @@ st.text("W celu skorzystania z systemu wgraj zdjęcie twarzy.\n"
 
 
 def generate_images(pic):
+    pic = torch.Tensor(pic)
     results = generate_sequence_sharpened(pix2pix, pic)
 
     return results
@@ -52,7 +53,7 @@ if image is not None:
     st.image(preview_image, caption='Obraz z wybranym oknem', use_column_width=True)
 
     pix2pix = Pix2Pix(3, 3)
-    st.write(CHECKPOINT_PATH)
+
     try:
         pix2pix.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=torch.device('cpu')))
         st.write("Model loaded successfully.")
