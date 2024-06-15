@@ -236,6 +236,7 @@ class Pix2Pix(pl.LightningModule):
 
 
 def sharpen_image_pil(image_tensor):
+    image_tensor = image_tensor.squeeze(0)
     image = transforms.ToPILImage()(image_tensor.cpu())
     image_np = np.array(image)
 
