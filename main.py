@@ -10,16 +10,24 @@ st.text("\n\n")
 st.text("W celu skorzystania z systemu wgraj zdjęcie twarzy.\n"
         "Następnie wybierz interesujący Cię fragment.")
 
+pix2pix = Pix2Pix(3, 3)
+CHECKPOINT_PATH = "Pix2Pix_last_one_2.ckpt"
+
+try:
+    pix2pix.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=torch.device('cpu')))
+    st.write("Model loaded successfully.")
+except Exception as e:
+    st.write(f"Error loading model: {e}")
+
 
 def generate_images(pic):
-    pic = torch.Tensor(pic)
+    # pic = torch.Tensor(pic)
     results = generate_sequence_sharpened(pix2pix, pic)
 
     return results
 
 # Load initial image from file
 initial_image_path = 'data/example_pic.png'
-CHECKPOINT_PATH = "Pix2Pix_last_one_2.ckpt"
 
 try:
     initial_image = Image.open(initial_image_path)
@@ -52,13 +60,6 @@ if image is not None:
 
     st.image(preview_image, caption='Obraz z wybranym oknem', use_column_width=True)
 
-    pix2pix = Pix2Pix(3, 3)
-
-    try:
-        pix2pix.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=torch.device('cpu')))
-        st.write("Model loaded successfully.")
-    except Exception as e:
-        st.write(f"Error loading model: {e}")
 
     if st.sidebar.button('Wybierz'):
         left = x
