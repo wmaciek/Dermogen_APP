@@ -13,7 +13,7 @@ import pytorch_lightning as pl
 device = torch.device("cuda:0") if torch.cuda.is_available() else torch.device("cpu")
 
 
-transform = transforms.Compose([transforms.ToPILImage(), transforms.Resize(256), transforms.ToTensor()])
+transform = transforms.Compose([transforms.Resize(256), transforms.ToTensor()])
 
 
 class DownSampleConv(nn.Module):
