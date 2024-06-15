@@ -18,7 +18,7 @@ def generate_images(pic):
 
 # Load initial image from file
 initial_image_path = 'data/example_pic.png'
-CHECKPOINT_PATH = "Pix2Pix_last_one.ckpt"
+CHECKPOINT_PATH = "Pix2Pix_last_one_2.ckpt"
 
 try:
     initial_image = Image.open(initial_image_path)
