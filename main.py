@@ -24,7 +24,8 @@ if uploaded_file is not None:
 
 
 def generate_images(pic):
-    results = [pic, generate_sequence_sharpened(pix2pix, pic)]
+    results = generate_sequence_sharpened(pix2pix, pic)
+    results.insert(pic, 0)
     return results
 
 
