@@ -28,7 +28,7 @@ def generate_images(pic):
     return results
 
 
-initial_image_path = 'data/example_pic.png'
+initial_image_path = 'data/example_pic_best.png'
 
 try:
     initial_image = Image.open(initial_image_path)
