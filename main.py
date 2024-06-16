@@ -11,22 +11,23 @@ st.text("W celu skorzystania z systemu wgraj zdjęcie twarzy.\n"
         "Następnie wybierz interesujący Cię fragment.")
 
 pix2pix = Pix2Pix(3, 3)
-CHECKPOINT_PATH = "Pix2Pix_last_one_2.ckpt"
 
-try:
-    pix2pix.load_state_dict(torch.load(CHECKPOINT_PATH, map_location=torch.device('cpu')))
-    st.write("Model loaded successfully.")
-except Exception as e:
-    st.write(f"Error loading model: {e}")
+uploaded_file = st.file_uploader("Wgraj Pix2Pix", type=["ckpt", "pt", "pth"])
+
+if uploaded_file is not None:
+    try:
+        with st.spinner("Ładowanie modelu..."):
+            pix2pix.load_state_dict(torch.load(uploaded_file, map_location=torch.device('cpu')))
+        st.success("Model loaded successfully.")
+    except Exception as e:
+        st.error(f"Error loading model: {e}")
 
 
 def generate_images(pic):
-    # pic = torch.Tensor(pic)
     results = generate_sequence_sharpened(pix2pix, pic)
-
     return results
 
-# Load initial image from file
+
 initial_image_path = 'data/example_pic.png'
 
 try:
@@ -34,7 +35,7 @@ try:
 except FileNotFoundError:
     initial_image = None
 
-uploaded_image = st.file_uploader('Upload an image', type=['jpg', 'jpeg', 'png'])
+uploaded_image = st.file_uploader('Wgraj zdjęcie', type=['jpg', 'jpeg', 'png'])
 
 if uploaded_image is not None:
     image = Image.open(uploaded_image)
@@ -67,14 +68,13 @@ if image is not None:
         bottom = y + size
 
         cropped_image = image.crop((left, top, right, bottom))
-        # cropped_image = cropped_image.resize((224, 224))
 
-        rotated_images = generate_images(cropped_image)
+        generated_images = generate_images(cropped_image)
 
         modified_images = []
-        for rotated in rotated_images:
+        for generated in generated_images:
             modified_image = image.copy()
-            modified_image.paste(rotated, (left, top))
+            modified_image.paste(generated, (left, top))
             draw = ImageDraw.Draw(modified_image)
             draw.rectangle([left, top, right, bottom], outline="blue", width=2)
             modified_images.append(modified_image)
@@ -82,9 +82,9 @@ if image is not None:
         st.session_state.modified_images = modified_images
 
     if 'modified_images' in st.session_state:
-        rotation_idx = st.slider('Wybierz kolejne efekty', 0, 3, 0)
+        generation_idx = st.slider('Wybierz kolejne efekty', 0, 3, 0)
         st.image(st.session_state.modified_images[rotation_idx],
-                 caption=f'Efekty po {rotation_idx}. zabiegu', use_column_width=True)
+                 caption=f'Efekty po {generation_idx}. zabiegu', use_column_width=True)
 else:
     st.write("Brak dostępnych obrazów. Wgraj proszę nowe zdjęcie.")
 

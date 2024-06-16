@@ -236,13 +236,11 @@ class Pix2Pix(pl.LightningModule):
 
 
 def sharpen_image_pil(image_tensor):
-    # image_tensor = image_tensor.squeeze(0)
     image = transforms.ToPILImage()(image_tensor.cpu())
     image_np = np.array(image)
 
-    # Tworzenie kernela wyostrzającego
     kernel = np.array([[0, -1, 0],
-                       [-1, 5, -1],
+                       [-1, 5,-1],
                        [0, -1, 0]])
 
     sharpened_image_np = cv2.filter2D(image_np, -1, kernel)
@@ -251,21 +249,17 @@ def sharpen_image_pil(image_tensor):
     return transforms.ToTensor()(sharpened_image).to(device)
 
 
-def generate_sequence_sharpened(model, img, sequence_len=3):
+def generate_sequence_sharpened(model, img, sequence_len=5):
     results = []
     model.eval()
     model = model.to(device)
 
-    # Ensure the initial image is copied to avoid negative stride issues
     current_img = transform(img.copy()).unsqueeze(0).to(device)
-    for i in range(1, sequence_len):
+    for _ in range(1, sequence_len):
         current_img = model.gen(current_img)
-        # Ensure current_img is contiguous before further processing
         current_img = current_img.contiguous()
-        # Apply sharpening and ensure the result is also contiguous
-        current_img = sharpen_image_pil(current_img)
-        # Add batch dimension back if it was removed
-        # current_img = current_img.unsqueeze(0)
-        # results.append(current_img.resize((224, 224)))
+        current_img = sharpen_image_pil(current_img[0])
+        current_img = current_img.unsqueeze(0)
+        results.append(current_img[0])
 
     return results
