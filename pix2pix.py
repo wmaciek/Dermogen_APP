@@ -260,6 +260,9 @@ def generate_sequence_sharpened(model, img, sequence_len=5):
         current_img = current_img.contiguous()
         current_img = sharpen_image_pil(current_img[0])
         current_img = current_img.unsqueeze(0)
-        results.append(current_img[0])
+        resized_img = torch.nn.functional.interpolate(current_img, size=(224, 224), mode='bilinear',
+                                                      align_corners=False)
+        pil_image = transforms.ToPILImage()(resized_img.squeeze(0).cpu())
+        results.append(pil_image)
 
     return results
