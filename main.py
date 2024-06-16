@@ -70,6 +70,8 @@ if image is not None:
         cropped_image = image.crop((left, top, right, bottom))
 
         generated_images = generate_images(cropped_image)
+        for generated in generated_images:
+            st.write(generated.size)
 
         modified_images = []
 
