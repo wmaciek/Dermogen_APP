@@ -83,7 +83,7 @@ if image is not None:
 
     if 'modified_images' in st.session_state:
         generation_idx = st.slider('Wybierz kolejne efekty', 0, 3, 0)
-        st.image(st.session_state.modified_images[rotation_idx],
+        st.image(st.session_state.modified_images[generation_idx],
                  caption=f'Efekty po {generation_idx}. zabiegu', use_column_width=True)
 else:
     st.write("Brak dostępnych obrazów. Wgraj proszę nowe zdjęcie.")
