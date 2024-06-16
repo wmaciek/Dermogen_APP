@@ -24,7 +24,7 @@ if uploaded_file is not None:
 
 
 def generate_images(pic):
-    results = generate_sequence_sharpened(pix2pix, pic)
+    results = [pic, generate_sequence_sharpened(pix2pix, pic)]
     return results
 
 
@@ -72,6 +72,7 @@ if image is not None:
         generated_images = generate_images(cropped_image)
 
         modified_images = []
+
         for generated in generated_images:
             modified_image = image.copy()
             modified_image.paste(generated, (left, top))
