@@ -21,6 +21,8 @@ if uploaded_file is not None:
         st.success("Model loaded successfully.")
     except Exception as e:
         st.error(f"Error loading model: {e}")
+else:
+    st.warning('Bez dostarczonego modelu otrzymasz losowy szum', icon="⚠️")
 
 
 def generate_images(pic):
